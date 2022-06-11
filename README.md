@@ -13,28 +13,34 @@ GIVEN a CMS-style blog site
 
 WHEN I visit the site for the first time
 THEN I am presented with the homepage, which includes:
-1. existing blog posts if any have been posted;
+1. existing blog posts if any have been posted; <!-- process -->
 2. navigation links for the homepage and
 3. the dashboard; and
 4. the option to log in
-
+<!-- checked -->
 WHEN I click on the homepage option
 THEN I am taken to the homepage
+<!-- checked -->
 
 WHEN I click on any other links in the navigation
 THEN I am prompted to either sign up or sign in
+<!-- handlebars; later -->
 
 WHEN I choose to sign up
 THEN I am prompted to create a username and password
+<!-- handlebars; later -->
 
 WHEN I click on the sign-up button
 THEN my user credentials are saved and I am logged into the site
+<!-- handlebars; later -->
 
 WHEN I revisit the site at a later time and choose to sign in
 THEN I am prompted to enter my username and password
+<!-- handlebars; later -->
 
 WHEN I am signed in to the site
 THEN I see navigation links for the homepage, the dashboard, and the option to log out
+<!-- handlebars; later -->
 
 WHEN I click on the homepage option in the navigation
 THEN I am taken to the homepage and presented with existing blog posts that include the post title and the date created
