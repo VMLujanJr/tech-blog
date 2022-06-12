@@ -4,5 +4,6 @@ const Comment = require('./Comment.js');
 
 module.exports = {
     User,
-    Post
+    Post,
+    Comment
 };
