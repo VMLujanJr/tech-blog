@@ -75,11 +75,79 @@ router.post('/login', (req, res) => {
     })
     .then(dbUserData => {
         if (!dbUserData) {
-
+            res.status(400).json({ message: 'No user found.' })
+            return;
         }
-        
-    })
 
+        // verify password
+        const validPassword = dbUserData.checkPassword(req.body.password);
+
+        if (!validPassword) {
+            res.status(400).json({ message: 'The password was incorrect.'});
+            return;
+        }
+
+        req.session.save(() => {
+            req.session.user_id = dbUserData.id;
+            req.session.username = dbUserData.username;
+            req.session.loggedIn = true;
+
+            res.json({ user: dbUserData, message: `Welcome ${dbUserData.username}, you are now logged in!`});
+        });
+    });
+});
+
+// POST /api/users/logout
+router.post('/logout', (req, res) => {
+    if (req.session.loggedIn) {
+        req.session.destroy(() => {
+            res.status(204).end();
+        });
+    }
+    else {
+        res.status(404).end();
+    }
+});
+
+// PUT /api/users/:id
+router.put('/:id', (req, res) => {
+    User.update(req.body, {
+        individualHooks: true, // User model has hooks for updates on passwords
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(dbUserData => {
+        if (!dbUserData[0]) {
+            res.status(404).json({ message: 'No user found.'});
+            return;
+        }
+        res.json(dbUserData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
+
+// DELETE /api/users/:id
+router.delete('/:id', (req, res) => {
+    User.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(dbUserData => {
+        if (!dbUserData) {
+            res.status(404).json({ message: 'No user found.' });
+            return;
+        }
+        res.json(dbUserData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
 });
 
 module.exports = router;
